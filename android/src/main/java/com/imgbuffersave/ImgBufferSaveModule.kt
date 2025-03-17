@@ -11,19 +11,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@ReactModule(name = ImgBufferSaveModule.NAME)
-class ImgBufferSaveModule(reactContext: ReactApplicationContext) :
-  NativeImgBufferSaveSpec(reactContext) {
+@OptIn(FrameworkAPI::class)
+class ImgBufferSaveModule internal constructor(val context: ReactApplicationContext) :
+    ReactContextBaseJavaModule(context) {
 
     companion object {
 
         const val NAME = "ImgBufferSave"
 
         init {
-            System.loadLibrary("saveimagetogallery")
+            System.loadLibrary("imgbuffersave")
         }
 
-        lateinit var instance: SaveImageToGalleryModule private set
+        lateinit var instance: ImgBufferSaveModule private set
 
 
         @OptIn(FrameworkAPI::class)
