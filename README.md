@@ -32,11 +32,17 @@ import { saveImageToGallery } from 'react-native-img-buffer-save';
 
 export default function App() {
   const saveImg = () => {
-    const imgBytes = Uint8Array.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]); // some image;
-
-    saveImageToGallery(img); // Accepts Uint8Array
-    // or
-    saveImageToGallery(img.buffer); // Accepts ArrayBuffer
+    // Example binary image data (replace with actual image bytes)
+    const imageBytes = Uint8Array.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) // YOUR REAL IMAGE;
+  
+    // This function saves the image directly to the device's gallery.
+    // It accepts both Uint8Array and ArrayBuffer inputs.
+  
+    // ✅ Option 1: Pass Uint8Array directly
+    saveImageToGallery(imageBytes);
+  
+    // ✅ Option 2: Pass ArrayBuffer directly
+    saveImageToGallery(imageBytes.buffer);
   };
 
   return (
