@@ -1,3 +1,27 @@
+import groovy.json.JsonSlurper
+import org.apache.tools.ant.filters.ReplaceTokens
+import java.nio.file.Paths
+
+static def findNodeModules(baseDir) {
+  def basePath = baseDir.toPath().normalize()
+  // Node's module resolution algorithm searches up to the root directory,
+  // after which the base path will be null
+  while (basePath) {
+    def nodeModulesPath = Paths.get(basePath.toString(), "node_modules")
+    def reactNativePath = Paths.get(nodeModulesPath.toString(), "react-native")
+    if (nodeModulesPath.toFile().exists() && reactNativePath.toFile().exists()) {
+      return nodeModulesPath.toString()
+    }
+    basePath = basePath.getParent()
+  }
+  throw new GradleException("react-native-img-buffer-save: Failed to find node_modules/ path!")
+}
+
+
+def nodeModules = findNodeModules(projectDir)
+logger.warn("react-native-img-buffer-save: node_modules/ found at: ${nodeModules}")
+
+
 buildscript {
   ext.getExtOrDefault = {name ->
     return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['ImgBufferSave_' + name]
@@ -15,6 +39,10 @@ buildscript {
   }
 }
 
+def reactNativeArchitectures() {
+  def value = rootProject.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
 
 def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
@@ -57,16 +85,44 @@ android {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
     buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
+    externalNativeBuild {
+      cmake {
+        cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
+        abiFilters (*reactNativeArchitectures())
+        arguments "-DANDROID_STL=c++_shared",
+                  "-DNODE_MODULES_DIR=${nodeModules}"
+      }
+    }
   }
+
+  externalNativeBuild {
+     cmake {
+       path "CMakeLists.txt"
+     }
+   }
 
   buildFeatures {
     buildConfig true
+    prefab true
   }
 
   buildTypes {
     release {
       minifyEnabled false
     }
+  }
+
+    packagingOptions {
+    excludes = [
+            "**/libjsi.so",
+             "**/libreactnativejni.so",
+            "**/libreact_nativemodule_core.so",
+            "**/libturbomodulejsijni.so",
+            "**/libc++_shared.so",
+            "**/libfbjni.so",
+            "**/libreactnative.so",
+    ]
   }
 
   lintOptions {

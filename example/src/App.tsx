@@ -1,12 +1,23 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'react-native-img-buffer-save';
+import { Text, View, StyleSheet,TouchableOpacity } from 'react-native';
+import { saveImageToGallery } from 'react-native-img-buffer-save';
 
-const result = multiply(3, 7);
+
 
 export default function App() {
+  const saveImg = () => {
+
+    const img = Uint8Array.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) //  some image;
+
+    saveImageToGallery(img); // Uint8Array
+    // or
+    saveImageToGallery(img.buffer); // ArrayBuffer
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <TouchableOpacity onPress={saveImg}>
+      <Text>Save IMG to gallery</Text>
+      </TouchableOpacity>
     </View>
   );
 }
