@@ -1,6 +1,7 @@
 # react-native-img-buffer-save
 
-A fast and lightweight React Native library built with JSI that allows you to save images directly to the device's gallery. Supports saving images from `Uint8Array` or `ArrayBuffer` buffers.
+A fast and lightweight React Native library built with **JSI** that allows you to **save images directly to the device's gallery**. 
+- Supports saving images from `Uint8Array` or `ArrayBuffer` buffers.
 
 ## Installation
 
