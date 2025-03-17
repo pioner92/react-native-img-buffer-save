@@ -2,9 +2,7 @@ import { NativeModules } from 'react-native'
 
 
 declare global {
-  type saveImageToGallery = (buffer: ArrayBuffer) => void
-
-  var saveImageToGallery: saveImageToGallery
+  var saveImageToGallery:  (buffer: ArrayBufferLike) => void
 }
 
 
