@@ -1,7 +1,7 @@
 {
   "name": "react-native-img-buffer-save",
   "version": "0.1.3",
-  "description": "",
+  "description": "Fast React Native JSI library for saving images to the device gallery from binary buffers (Uint8Array or ArrayBuffer).",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "lib/typescript/index.d.ts",
