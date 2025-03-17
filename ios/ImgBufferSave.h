@@ -1,6 +1,6 @@
 
-#import "generated/RNImgBufferSaveSpec/RNImgBufferSaveSpec.h"
+#import <React/RCTBridgeModule.h>
 
-@interface ImgBufferSave : NSObject <NativeImgBufferSaveSpec>
+@interface ImgBufferSave : NSObject <RCTBridgeModule>
 
 @end

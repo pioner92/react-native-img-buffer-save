@@ -11,14 +11,12 @@
 @implementation ImgBufferSave
 RCT_EXPORT_MODULE()
 
-
 + (BOOL)requiresMainQueueSetup {
   return YES;
 }
 
 using namespace facebook;
 using namespace std;
-
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
   NSLog(@"Installing JSI bindings for save-image-to-gallery...");
@@ -81,7 +79,6 @@ void initialize(jsi::Runtime& rt) {
       });
 
   rt.global().setProperty(rt, "saveImageToGallery", std::move(fn));
-}
 }
 }
 @end
